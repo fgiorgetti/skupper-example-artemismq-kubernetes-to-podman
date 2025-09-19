@@ -113,6 +113,12 @@ Again, we will use the `skupper.v2.resource` module, but this time, we will use 
         state: latest
 ```
 
+> ___
+> **_NOTE_**
+>
+> As you noticed, the target host for the Skupper `Link` is `my.podman.host`. Make sure this hostname resolves to a valid IP address that can be reached from the Skupper site running on the Kubernetes cluster.
+> ___
+
 ### Install the Controller for System sites
 
 The last step is just to install the Controller for System sites, so that we can see updated status for the custom resources for the Podman site.
