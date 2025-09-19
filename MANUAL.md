@@ -323,4 +323,4 @@ mybroker   mybroker      5672          ActiveMQArtemis=artemis-broker   Ready   
 
 ## Validation
 
-Now get back to the [README.md](README.md) and proceed with the validation.
+Now get back to the [README.md](README.md#validation-your-scenario) and proceed with the validation.
