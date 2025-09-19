@@ -13,6 +13,12 @@ It does exactly the same things that is done through the manual process.
 
 So we will focus on explaining just the `skupper.v2` Ansible collection here.
 
+> ___
+> **_NOTE_**
+>
+> The new `skupper.v2` collection, in spite of the previous collections used in v1, do not rely on the CLI to execute commands.
+> ___
+
 ### Creating the Podman Site resources
 
 To create resources, you can use the `skupper.v2.resource` module.
