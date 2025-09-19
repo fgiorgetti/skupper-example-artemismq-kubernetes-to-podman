@@ -1,0 +1,9 @@
+apiVersion: skupper.io/v2alpha1
+kind: Connector
+metadata:
+  name: mybroker
+spec:
+  port: 5672
+  routingKey: mybroker
+  selector: ActiveMQArtemis=artemis-broker
+  type: tcp

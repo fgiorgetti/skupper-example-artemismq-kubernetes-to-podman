@@ -1,0 +1,69 @@
+---
+- name: Playbook to demonstrate exposing an ActiveMQ Artemis running on Kubernetes to a Podman site
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Install the Skupper V2 controller
+      skupper.v2.resource:
+        path: https://github.com/skupperproject/skupper/releases/download/2.1.1/skupper-cluster-scope.yaml        
+        namespace: skupper
+    - name: Create the broker namespace on OCP
+      kubernetes.core.k8s:
+        name: broker
+        api_version: v1
+        kind: Namespace
+        state: present
+    - name: Install the ActiveMQ Artemis Operator
+      kubernetes.core.k8s:
+        state: present
+        src: ./ocp/activemq-artemis-operator.yaml
+    - name: Create the ActiveMQ Artemis instance and a Messaging Queue
+      kubernetes.core.k8s:
+        state: present
+        namespace: broker
+        src: ./ocp/activemq-artemis.yaml
+
+    - name: Create the Skupper V2 resources
+      skupper.v2.resource:
+        path: "{{ item }}"
+        platform: podman
+      loop:
+        - ./podman/Site-fedora.yaml
+        - ./podman/RouterAccess-router-access-fedora.yaml
+        - ./podman/Listener-mybroker.yaml
+    - name: Starting the default namespace
+      skupper.v2.system:
+        action: start
+        platform: podman
+      register: system
+    - name: Copy user provided certificates to skupper input certs path
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ system.path }}/input/certs/"
+      loop:
+        - ./podman/router-access-fedora
+        - ./podman/client-router-access-fedora
+    - name: Reload the podman site
+      skupper.v2.system:
+        action: reload
+        platform: podman
+      register: system
+
+    - name: Create the Skupper resources on OCP
+      skupper.v2.resource:
+        path: "{{ item }}"
+        namespace: broker
+        state: latest
+      loop:
+        - ./ocp/Site-ocp-site.yaml
+        - ./ocp/Connector-mybroker.yaml
+    - name: Create the Link to the Podman site on OCP
+      skupper.v2.resource:
+        def: "{{ system.links['my.podman.host'] }}"
+        namespace: broker
+        state: latest
+
+    - name: Enabling the system controller on your local host
+      skupper.v2.controller:
+        action: install
+        platform: podman

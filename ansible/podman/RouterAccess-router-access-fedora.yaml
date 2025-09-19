@@ -1,0 +1,36 @@
+apiVersion: skupper.io/v2alpha1
+kind: RouterAccess
+metadata:
+  name: router-access-fedora
+spec:
+  tlsCredentials: router-access-fedora
+  roles:
+  - name: inter-router
+    port: 55671
+  - name: edge
+    port: 45671
+  subjectAlternativeNames:
+  - 0.0.0.0
+  - '::'
+  - fgiorget-eth0
+  - 192.168.68.113
+  - 172.17.0.1
+  - 192.168.49.1
+  - 172.20.0.1
+  - 192.168.124.1
+  - 192.168.8.1
+  - 192.168.42.1
+  - 192.168.68.115
+  - 10.22.81.213
+  - fd62:3db2:4c7:990a:5936:f72e:b3e1:742d
+  - fe80::7a7:c77b:f81f:f631
+  - fe80::80f0:77ff:feb7:a807
+  - fe80::58cf:9ff:fecc:3ebd
+  - fc00:f853:ccd:e793::1
+  - fe80::a4c6:34ff:feb0:d16c
+  - fe80::fc54:ff:fe28:6316
+  - fe80::3888:93ff:fe07:fa60
+  - fd62:3db2:4c7:990a:a878:6bb2:3543:3427
+  - fe80::aa07:880a:b197:7534
+  - fd10:22:80:1::11d4
+  - fe80::af88:f880:9a6d:f88e

@@ -1,0 +1,21 @@
+---
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemis
+metadata:
+  name: artemis-broker
+spec:
+  brokerProperties:
+    - addressConfigurations."myqueue".routingTypes=ANYCAST
+    - addressConfigurations."myqueue".queueConfigs."myqueue".routingType=ANYCAST
+  acceptors:
+    - name: amqp
+      protocols: amqp
+      ingressHost: localhost
+      port: 5672
+      sslEnabled: false
+      needClientAuth: false
+      wantClientAuth: false
+      verifyHost: false
+      expose: true
+      anycastPrefix: jms.queue.
+      multicastPrefix: /topic/
