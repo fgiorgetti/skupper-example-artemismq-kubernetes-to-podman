@@ -1,0 +1,8 @@
+[allowlist]
+  description = "Global Allowlist"
+
+  paths = [
+    # Ignore all example certs
+    '''\/ansible\/podman\/client-router-access-fedora\/*''',
+    '''\/ansible\/podman\/router-access-fedora\/*''',
+  ]
